@@ -133,4 +133,11 @@ async def fix_legacy_encoding_async(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=3000)
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--port", required=True, help="Port number to run the server on")
+    args = parser.parse_args()
+    port = args.port
+
+    uvicorn.run(app, host="127.0.0.1", port=port)
