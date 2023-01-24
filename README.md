@@ -13,7 +13,7 @@ cd api-py
 2. a. ...as a Docker container:
 
 ```sh
-docker build -f ./python3.10.dockerfile -t api-py-img
+docker build -f ./python3.10.dockerfile -t api-py-img .
 
 docker run -d --name api-py -p ${PORT_NUM_AS_ENV_VAR}:80 api-py-img
 ```
