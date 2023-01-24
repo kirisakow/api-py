@@ -68,7 +68,7 @@ async def fix_legacy_encoding_async(
                 return enc
             elif enc is None:
                 # Copied from https://docs.python.org/3/library/codecs.html#standard-encodings
-                with open('standard_encodings.txt', 'r') as f:
+                with open('assets/standard_encodings.txt', 'r') as f:
                     standard_encodings = f.read().splitlines()
                 return standard_encodings
 
