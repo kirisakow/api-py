@@ -49,6 +49,8 @@ async def unescape_url(url_to_unescape: str = Query(alias='url', title='Tiiiiitl
 # http://localhost:3000/fix_legacy_encoding?str_to_fix=GocÅ‚awski&encoding_from=&encoding_to=&expected_str=Gocławski&recursivity_depth=
 # http://localhost:3000/fix_legacy_encoding?str_to_fix=ÃƒÂ©chÃƒÂ©ancier&encoding_from=&encoding_to=&expected_str=échéancier&recursivity_depth=2
 @app.get("/fix_legacy_encoding")
+# http://localhost:3000/whatever_disentangler?str_to_fix=GocÅ‚awski&encoding_from=&encoding_to=&expected_str=Gocławski&recursivity_depth=
+# http://localhost:3000/whatever_disentangler?str_to_fix=ÃƒÂ©chÃƒÂ©ancier&encoding_from=&encoding_to=&expected_str=échéancier&recursivity_depth=2
 @app.get("/whatever_disentangler")
 async def fix_legacy_encoding_async(
     str_to_fix: str = Query(min_length=1, title='Tiiiiitle', description='Descriiiiption descriiiiption descriiiiption'),
