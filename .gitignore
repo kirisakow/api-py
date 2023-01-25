@@ -1,4 +1,4 @@
-# symlink to whatever_disentangler: ln -s ../whatever_disentangler/whatever_disentangler/ whatever_disentangler
+# symlink to whatever_disentangler: ln -s ../whatever_disentangler/whatever_disentangler whatever_disentangler
 whatever_disentangler
 
 # Byte-compiled / optimized / DLL files
