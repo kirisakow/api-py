@@ -5,5 +5,4 @@ COPY ./whatever_disentangler /app/whatever_disentangler
 
 RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
-COPY ./assets /app/assets
 COPY ./main.py /app
