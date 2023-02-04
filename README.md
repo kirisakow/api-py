@@ -1,9 +1,45 @@
 ## Examples (live)
 
-* https://crac.ovh/urlunescape?url=https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
-* https://crac.ovh/urlunescape?url=https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
-* https://crac.ovh/fix_legacy_encoding?str_to_fix=GocÅ‚awski&encoding_from=&encoding_to=&expected_str=Gocławski&recursivity_depth=
-* https://crac.ovh/fix_legacy_encoding?str_to_fix=ÃƒÂ©chÃƒÂ©ancier&encoding_from=&encoding_to=&expected_str=échéancier&recursivity_depth=2
+* request: https://crac.ovh/urlunescape?url=https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
+  * response: `"https://uk.wikipedia.org/wiki/Україна"`
+* request: https://crac.ovh/urlunescape?url=https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
+  * response: `"https://uk.wikipedia.org/wiki/Україна"`
+* request: https://crac.ovh/fix_legacy_encoding?str_to_fix=GocÅ‚awski&encoding_from=&encoding_to=&expected_str=Gocławski&recursivity_depth=
+  * response (JSON):
+```json
+[
+   {
+      "str_to_fix":"GocÅ‚awski",
+      "encoding_from":"cp1252",
+      "fixed_str":"Gocławski",
+      "encoding_to":"utf_8",
+      "recursivity_depth":1
+   },
+   ⋮
+]
+```
+* request: https://crac.ovh/fix_legacy_encoding?str_to_fix=ÃƒÂ©chÃƒÂ©ancier&encoding_from=&encoding_to=&expected_str=échéancier&recursivity_depth=2
+  * response (JSON):
+```json
+[
+   ⋮,
+   {
+      "str_to_fix":"ÃƒÂ©chÃƒÂ©ancier",
+      "encoding_from":"cp1252",
+      "fixed_str":"Ã©chÃ©ancier",
+      "encoding_to":"utf_8",
+      "recursivity_depth":2
+   },
+   {
+      "str_to_fix":"Ã©chÃ©ancier",
+      "encoding_from":"cp1252",
+      "fixed_str":"échéancier",
+      "encoding_to":"utf_8",
+      "recursivity_depth":1
+   },
+   ⋮
+]
+```
 
 ## Installation & usage on a latest Ubuntu Linux server
 
