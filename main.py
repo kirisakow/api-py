@@ -39,8 +39,11 @@ async def unescape_url(url_to_unescape: str = Query(alias='url', title='Tiiiiitl
     if not url_to_unescape:
         raise ValueError('')
     url_to_unescape = url_to_unescape.strip('\n')
-    regex_patterns = {'html_entity': r'[&]([a-z]+)|([#][0-9]+)[;]',
-                      'escaped': r'%[uU]([0-9A-Fa-f]{4})', 'percent_encoded': r'%([0-9A-Fa-f]{2})'}
+    regex_patterns = {
+        'html_entity': r'[&]([a-z]+)|([#][0-9]+)[;]',
+        'escaped': r'%[uU]([0-9A-Fa-f]{4})',
+        'percent_encoded': r'%([0-9A-Fa-f]{2})'
+    }
     how_many_passes = 3
     for _ in range(how_many_passes):
         if re.search(regex_patterns['html_entity'], url_to_unescape):
