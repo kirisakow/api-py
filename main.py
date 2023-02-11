@@ -76,15 +76,16 @@ async def fix_legacy_encoding_async(
     for pname, pvalue in zip(qparam_names, qparams):
         print(f'{pname.rjust(10)} = {repr(pvalue)} ({type(pvalue).__name__})')
 
-    str_to_fix = None if str_to_fix is None or str_to_fix.strip() == '' else str_to_fix.strip()
-    encoding_from = None if encoding_from is None or encoding_from.strip(
-    ) == '' else encoding_from.strip()
-    encoding_to = 'utf_8' if encoding_to is None or encoding_to.strip(
-    ) == '' else encoding_to.strip()
-    expected_str = None if expected_str is None or expected_str.strip(
-    ) == '' else expected_str.strip()
-    recursivity_depth = 1 if recursivity_depth is None or str(
-        recursivity_depth).strip() == '' or recursivity_depth < 1 else recursivity_depth
+    def emptyOrNone(v):
+        return v is None or str(v) == ''
+
+    str_to_fix = None if emptyOrNone(str_to_fix) else str_to_fix.strip()
+    encoding_from = None if emptyOrNone(
+        encoding_from) else encoding_from.strip()
+    encoding_to = 'utf_8' if emptyOrNone(encoding_to) else encoding_to.strip()
+    expected_str = None if emptyOrNone(expected_str) else expected_str.strip()
+    recursivity_depth = 1 if recursivity_depth < 1 \
+        or emptyOrNone(recursivity_depth) else recursivity_depth
 
     try:
         disentangler = wd.Disentangler()
