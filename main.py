@@ -47,7 +47,7 @@ async def unescape_url(url_to_unescape: str = Query(alias='url', title='Tiiiiitl
     output_as_bytes, err_as_bytes = proc_url_unescape.communicate()
     if err_as_bytes and not output_as_bytes:
         print(err_as_bytes)
-    return output_as_bytes.decode()
+    return output_as_bytes.decode().strip('\n')
 
 
 # http://localhost:3000/fix_legacy_encoding?str_to_fix=GocÅ‚awski&encoding_from=&encoding_to=&expected_str=Gocławski&recursivity_depth=
