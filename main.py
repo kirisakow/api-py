@@ -83,8 +83,9 @@ async def fix_legacy_encoding_async(
         encoding_from) else encoding_from.strip()
     encoding_to = 'utf_8' if emptyOrNone(encoding_to) else encoding_to.strip()
     expected_str = None if emptyOrNone(expected_str) else expected_str.strip()
-    recursivity_depth = 1 if recursivity_depth < 1 \
-        or emptyOrNone(recursivity_depth) else recursivity_depth
+    recursivity_depth = 1 if emptyOrNone(recursivity_depth) \
+        or int(recursivity_depth) < 1 \
+        else int(recursivity_depth)
 
     try:
         disentangler = wd.Disentangler()
