@@ -5,6 +5,14 @@ import re
 import subprocess
 import sys
 import urllib.parse
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            '../whatever_disentangler'
+        )
+    )
+)
 from whatever_disentangler import whatever_disentangler as wd
 
 

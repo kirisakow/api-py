@@ -1,6 +1,3 @@
-# symlink to whatever_disentangler: ln -s ../whatever_disentangler/whatever_disentangler whatever_disentangler
-whatever_disentangler
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
