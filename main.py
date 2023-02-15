@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Query
 import html
+import logging
 import os
 import re
 import subprocess
@@ -14,7 +15,18 @@ sys.path.append(
     )
 )
 from whatever_disentangler import whatever_disentangler as wd
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            '../telegram_bots'
+        )
+    )
+)
+from utils import JournalLogger
 
+logging.basicConfig(level=logging.DEBUG)
+jl = JournalLogger(program_name='api-py')
 
 app = FastAPI(
     description='A few tools I created for myself and made available as an HTTP API', )
@@ -45,17 +57,16 @@ app = FastAPI(
 # http://localhost:3000/unescape_url/https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
 @app.get("/unescape_url/{url_to_unescape:path}")
 async def unescape_url(url_to_unescape: str = Query(alias='url', title='Tiiiiitle', description='Descriiiiption descriiiiption descriiiiption')) -> str:
+    jl.print(f"url_to_unescape: {url_to_unescape}")
     proc_url_unescape = subprocess.Popen(
         ['/usr/bin/python', '../url_tools/url_unescape.py', url_to_unescape],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
     )
-    proc_url_unescape.stdin.write(url_to_unescape.encode())
-    proc_url_unescape.stdin.flush()
     output_as_bytes, err_as_bytes = proc_url_unescape.communicate()
     if err_as_bytes and not output_as_bytes:
-        print(err_as_bytes)
-    return output_as_bytes.decode()
+        jl.print(err_as_bytes)
+    return output_as_bytes.decode().strip('\n')
 
 
 # http://localhost:3000/fix_legacy_encoding?str_to_fix=GocÅ‚awski&encoding_from=&encoding_to=&expected_str=Gocławski&recursivity_depth=
@@ -75,13 +86,13 @@ async def fix_legacy_encoding_async(
             default=None, title='Tiiiiitle', description='Descriiiiption descriiiiption descriiiiption'),
         recursivity_depth: int | None | str = Query(default=1, ge=1, title='Tiiiiitle', description='Descriiiiption descriiiiption descriiiiption', coerce=lambda x: int(x) if isinstance(x, int) else 1)):
 
-    print('Request params:',)
+    jl.print('Request params:',)
     qparams = [str_to_fix, encoding_from,
                encoding_to, expected_str, recursivity_depth]
     qparam_names = ['str_to_fix', 'encoding_from',
                     'encoding_to', 'expected_str', 'recursivity_depth']
     for pname, pvalue in zip(qparam_names, qparams):
-        print(f'{pname.rjust(10)} = {repr(pvalue)} ({type(pvalue).__name__})')
+        jl.print(f'{pname.rjust(10)} = {repr(pvalue)} ({type(pvalue).__name__})')
 
     def emptyOrNone(v):
         return v is None or str(v) == ''
@@ -105,7 +116,7 @@ async def fix_legacy_encoding_async(
             recursivity_depth=recursivity_depth
         )
     except Exception as e:
-        print(e)
+        jl.print(e)
     else:
         return list(ret)
 
