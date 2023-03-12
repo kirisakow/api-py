@@ -1,3 +1,5 @@
+**WARNING** This library is still under development and intended for experimental purposes only.
+
 ## Examples (live)
 
 * request: https://crac.ovh/urlunescape?url=https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
