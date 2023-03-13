@@ -63,7 +63,7 @@ docker build -f ./python3.10.dockerfile -t api-py-img .
 docker run -d --name api-py -p ${PORT_NUM_AS_ENV_VAR}:80 api-py-img
 ```
 
-2. b. ...or in a virtual environment:
+2. b. ...or as a transient systemd service in a virtual environment:
 
 ```sh
 sudo apt install python3.10-venv
@@ -74,7 +74,11 @@ source venv/bin/activate
 
 python3 -m pip install -r ./requirements.txt
 
+# simplest possible launch option, not recommended as it confers weak reliability:
 python3 ./main.py --port ${PORT_NUM_AS_ENV_VAR} &
+
+# a much better launch option, as a transient systemd service:
+sudo systemd-run --uid=myuser --gid=myuser --same-dir --unit=api-py_$(date +%Y%m%d_%H%M%S)_myuser /usr/bin/python /home/myuser/api-py/main.py --port $PORT_NUM_AS_ENV_VAR
 ```
 
 3. Configure Nginx as reverse proxy, for example:
