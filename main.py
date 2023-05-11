@@ -37,26 +37,27 @@ app = FastAPI(
 @app.get("/urlunescape")
 # http://localhost:3000/urlunescape/https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
 # http://localhost:3000/urlunescape/https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
-@app.get("/urlunescape/{url_to_unescape:path}")
+@app.get("/urlunescape/{url:path}")
 # http://localhost:3000/unescapeurl?url=https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
 # http://localhost:3000/unescapeurl?url=https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
 @app.get("/unescapeurl")
 # http://localhost:3000/unescapeurl/https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
 # http://localhost:3000/unescapeurl/https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
-@app.get("/unescapeurl/{url_to_unescape:path}")
+@app.get("/unescapeurl/{url:path}")
 # http://localhost:3000/url_unescape?url=https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
 # http://localhost:3000/url_unescape?url=https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
 @app.get("/url_unescape")
 # http://localhost:3000/url_unescape/https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
 # http://localhost:3000/url_unescape/https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
-@app.get("/url_unescape/{url_to_unescape:path}")
+@app.get("/url_unescape/{url:path}")
 # http://localhost:3000/unescape_url?url=https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
 # http://localhost:3000/unescape_url?url=https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
 @app.get("/unescape_url")
 # http://localhost:3000/unescape_url/https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
 # http://localhost:3000/unescape_url/https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
-@app.get("/unescape_url/{url_to_unescape:path}")
-async def unescape_url(url_to_unescape: str = Query(alias='url', title='Tiiiiitle', description='Descriiiiption descriiiiption descriiiiption')) -> str:
+@app.get("/unescape_url/{url:path}")
+async def unescape_url(url: str) -> str:
+    url_to_unescape = url
     jl.print(f"url_to_unescape: {url_to_unescape}")
     proc_url_unescape = subprocess.Popen(
         ['/usr/bin/python', '../url_tools/url_unescape.py', url_to_unescape],
