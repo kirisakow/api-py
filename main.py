@@ -6,24 +6,34 @@ import re
 import subprocess
 import sys
 import urllib.parse
+
 sys.path.append(
     os.path.abspath(
         os.path.join(
-            os.path.dirname(__file__),
-            '../whatever_disentangler'
+            os.path.dirname(__file__), '../whatever_disentangler'
         )
     )
 )
-from whatever_disentangler import whatever_disentangler as wd
+from whatever_disentangler import Disentangler
+
 sys.path.append(
     os.path.abspath(
         os.path.join(
-            os.path.dirname(__file__),
-            '../telegram_bots'
+            os.path.dirname(__file__), '../telegram_bots'
         )
     )
 )
 from utils import JournalLogger
+
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__), '../morse_decoder_encoder'
+        )
+    )
+)
+from morse_decoder_encoder import decode_from_morse, encode_to_ansi_morse
+
 
 logging.basicConfig(level=logging.DEBUG)
 jl = JournalLogger(program_name='api-py')
@@ -108,7 +118,7 @@ async def fix_legacy_encoding_async(
         else int(recursivity_depth)
 
     try:
-        disentangler = wd.Disentangler()
+        disentangler = Disentangler()
         ret = disentangler.disentangle(
             str_to_fix=str_to_fix,
             encoding_from=encoding_from,
@@ -120,6 +130,23 @@ async def fix_legacy_encoding_async(
         jl.print(e)
     else:
         return list(ret)
+
+
+# http://localhost:3000/decode_morse?str_to_decode=•••%20−•−%20•−%20−−••%20•−%20−•%20−•%20−−−%20•%20%20••%20•••%20−−−•%20•%20−−••%20•−%20•%20−%20•−•−•−%20%20−•%20•−%20•−−•%20••%20•••%20•−%20−•%20−•%20−−−%20•%20%20−−−%20•••%20−%20•−%20•%20−%20•••%20•−•−
+@app.get("/decode_morse")
+# http://localhost:3000/decode_morse/•••%20−•−%20•−%20−−••%20•−%20−•%20−•%20−−−%20•%20%20••%20•••%20−−−•%20•%20−−••%20•−%20•%20−%20•−•−•−%20%20−•%20•−%20•−−•%20••%20•••%20•−%20−•%20−•%20−−−%20•%20%20−−−%20•••%20−%20•−%20•%20−%20•••%20•−•−
+@app.get("/decode_morse/{str_to_decode}")
+async def decode_morse(str_to_decode: str) -> dict:
+    jl.print(f'{str_to_decode = }')
+    return decode_from_morse(str_to_decode)
+
+# http://localhost:3000/encode_to_morse?str_to_encode=СКАЗАННОЕ%20ИСЧЕЗАЕТ,%20НАПИСАННОЕ%20ОСТАЕТСЯ
+@app.get("/encode_to_morse")
+# http://localhost:3000/encode_to_morse/СКАЗАННОЕ%20ИСЧЕЗАЕТ,%20НАПИСАННОЕ%20ОСТАЕТСЯ
+@app.get("/encode_to_morse/{str_to_encode}")
+async def encode_to_morse(str_to_encode: str) -> dict:
+    jl.print(f'{str_to_encode = }')
+    return encode_to_ansi_morse(str_to_encode)
 
 
 if __name__ == "__main__":
