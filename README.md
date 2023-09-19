@@ -1,12 +1,19 @@
 **WARNING** This library is still under development and intended for experimental purposes only.
 
+## Various string-decoding tools
+
 ## Examples (live)
 
-* request: https://crac.ovh/urlunescape?url=https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0
+* problem: decode `https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0`:
+  * request: [`https://crac.ovh/urlunescape?url=`https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0](https://crac.ovh/urlunescape?url=https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0)
   * response: `"https://uk.wikipedia.org/wiki/Україна"`
-* request: https://crac.ovh/urlunescape?url=https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
+
+* problem: decode `https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430`:
+  * request: [`https://crac.ovh/urlunescape?url=`https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430](https://crac.ovh/urlunescape?url=https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430)
   * response: `"https://uk.wikipedia.org/wiki/Україна"`
-* request: https://crac.ovh/fix_legacy_encoding?str_to_fix=GocÅ‚awski&encoding_from=&encoding_to=&expected_str=Gocławski&recursivity_depth=
+
+* problem: you have a garbled string (`GocÅ‚awski`) and its fixed shape (`Gocławski`), and you need to know the source and target character encodings:
+  * request: [`https://crac.ovh/fix_legacy_encoding?str_to_fix=`GocÅ‚awski`&expected_str=`Gocławski`&recursivity_depth=`](https://crac.ovh/fix_legacy_encoding?str_to_fix=GocÅ‚awski&expected_str=Gocławski&recursivity_depth=)
   * response (JSON):
 ```json
 [
@@ -20,7 +27,9 @@
    ⋮
 ]
 ```
-* request: https://crac.ovh/fix_legacy_encoding?str_to_fix=ÃƒÂ©chÃƒÂ©ancier&encoding_from=&encoding_to=&expected_str=échéancier&recursivity_depth=2
+
+* problem: you need to perform a 2-depth recursive disentangling on a wickedly garbled string (`ÃƒÂ©chÃƒÂ©ancier`) of which you know the fixed shape (`échéancier`), and you need to know the source and target character encodings:
+  * request: [`https://crac.ovh/fix_legacy_encoding?str_to_fix=`ÃƒÂ©chÃƒÂ©ancier`&expected_str=`échéancier`&recursivity_depth=`2](https://crac.ovh/fix_legacy_encoding?str_to_fix=ÃƒÂ©chÃƒÂ©ancier&expected_str=échéancier&recursivity_depth=2)
   * response (JSON):
 ```json
 [
@@ -42,9 +51,10 @@
    ⋮
 ]
 ```
-* requests:
-  * https://crac.ovh/decode_morse?str_to_decode=•••%20−•−%20•−%20−−••%20•−%20−•%20−•%20−−−%20•%20%20••%20•••%20−−−•%20•%20−−••%20•−%20•%20−%20•−•−•−%20%20−•%20•−%20•−−•%20••%20•••%20•−%20−•%20−•%20−−−%20•%20%20−−−%20•••%20−%20•−%20•%20−%20•••%20•−•−
-  * https://crac.ovh/decode_morse/•••%20−•−%20•−%20−−••%20•−%20−•%20−•%20−−−%20•%20%20••%20•••%20−−−•%20•%20−−••%20•−%20•%20−%20•−•−•−%20%20−•%20•−%20•−−•%20••%20•••%20•−%20−•%20−•%20−−−%20•%20%20−−−%20•••%20−%20•−%20•%20−%20•••%20•−•−
+* problem: you need to decode a Morse string in every possible alphabet `••• −•− •− −−•• •− −• −• −−− •  •• ••• −−−• • −−•• •− • − •−•−•−  −• •− •−−• •• ••• •− −• −• −−− •  −−− ••• − •− • − ••• •−•−`:
+  * requests:
+    * [`https://crac.ovh/decode_morse?str_to_decode=`•••%20−•−%20•−%20−−••%20•−%20−•%20−•%20−−−%20•%20%20••%20•••%20−−−•%20•%20−−••%20•−%20•%20−%20•−•−•−%20%20−•%20•−%20•−−•%20••%20•••%20•−%20−•%20−•%20−−−%20•%20%20−−−%20•••%20−%20•−%20•%20−%20•••%20•−•−](https://crac.ovh/decode_morse?str_to_decode=•••%20−•−%20•−%20−−••%20•−%20−•%20−•%20−−−%20•%20%20••%20•••%20−−−•%20•%20−−••%20•−%20•%20−%20•−•−•−%20%20−•%20•−%20•−−•%20••%20•••%20•−%20−•%20−•%20−−−%20•%20%20−−−%20•••%20−%20•−%20•%20−%20•••%20•−•−)
+    * [`https://crac.ovh/decode_morse/`•••%20−•−%20•−%20−−••%20•−%20−•%20−•%20−−−%20•%20%20••%20•••%20−−−•%20•%20−−••%20•−%20•%20−%20•−•−•−%20%20−•%20•−%20•−−•%20••%20•••%20•−%20−•%20−•%20−−−%20•%20%20−−−%20•••%20−%20•−%20•%20−%20•••%20•−•−](https://crac.ovh/decode_morse/•••%20−•−%20•−%20−−••%20•−%20−•%20−•%20−−−%20•%20%20••%20•••%20−−−•%20•%20−−••%20•−%20•%20−%20•−•−•−%20%20−•%20•−%20•−−•%20••%20•••%20•−%20−•%20−•%20−−−%20•%20%20−−−%20•••%20−%20•−%20•%20−%20•••%20•−•−)
 * return as response (JSON):
 ```json
 {
@@ -53,9 +63,11 @@
   "latin":"SKAZANNOE ISÖEZAET, NAPISANNOE OSTAETSÄ"
 }
 ```
-* requests:
-  * https://crac.ovh/encode_to_morse?str_to_encode=СКАЗАННОЕ%20ИСЧЕЗАЕТ,%20НАПИСАННОЕ%20ОСТАЕТСЯ
-  * https://crac.ovh/encode_to_morse/СКАЗАННОЕ%20ИСЧЕЗАЕТ,%20НАПИСАННОЕ%20ОСТАЕТСЯ
+
+* problem: you need to encode to Morse a string:
+  * requests:
+    * [`https://crac.ovh/encode_to_morse?str_to_encode=`СКАЗАННОЕ%20ИСЧЕЗАЕТ,%20НАПИСАННОЕ%20ОСТАЕТСЯ](https://crac.ovh/encode_to_morse?str_to_encode=СКАЗАННОЕ%20ИСЧЕЗАЕТ,%20НАПИСАННОЕ%20ОСТАЕТСЯ)
+    * [`https://crac.ovh/encode_to_morse/`СКАЗАННОЕ%20ИСЧЕЗАЕТ,%20НАПИСАННОЕ%20ОСТАЕТСЯ](https://crac.ovh/encode_to_morse/СКАЗАННОЕ%20ИСЧЕЗАЕТ,%20НАПИСАННОЕ%20ОСТАЕТСЯ)
 * return as response (JSON):
 ```json
 {
