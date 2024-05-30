@@ -159,4 +159,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     port = int(args.port)
 
-    uvicorn.run(app, host="127.0.0.1", port=port)
+    try:
+        uvicorn.run(app, host="127.0.0.1", port=port)
+    except KeyboardInterrupt:
+        pass
