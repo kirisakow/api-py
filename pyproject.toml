@@ -1,0 +1,20 @@
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+colorama = ">=0.4.5"
+fastapi = ">=0.89.1"
+httpx = ">=0.24.0"
+requests = ">=2.28.2"
+urllib3 = ">=1.26.9"
+uvicorn = ">=0.20.0"
+cysystemd = ">=1.5.3"
+telebot = "^0.0.5"
+aiohttp = "^3.9.5"
+yt-dlp = "^2024.5.27"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
