@@ -2,6 +2,11 @@
 
 ## Various string-decoding tools
 
+Core dependencies under the hood:
+- [`whatever-disentangler`](https://github.com/kirisakow/whatever-disentangler)
+- [`url_tools`](https://github.com/kirisakow/url_tools)
+- [`morse-decoder-encoder`](https://github.com/kirisakow/morse-decoder-encoder)
+
 ## Examples (live)
 
 * problem: decode `https://uk.wikipedia.org/wiki/%D0%A3%D0%BA%D1%80%D0%B0%D1%97%D0%BD%D0%B0`:
@@ -81,7 +86,7 @@
 ### 1. Download and get into the directory
 
 ```sh
-git clone ssh://git@github.com:22/kirisakow/api-py.git
+git clone https://github.com/kirisakow/api-py.git
 
 cd api-py
 ```

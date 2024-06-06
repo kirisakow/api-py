@@ -1,38 +1,9 @@
-from fastapi import FastAPI, Query
-import html
 import logging
-import os
-import re
-import subprocess
-import sys
-import urllib.parse
-
-sys.path.append(
-    os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__), '../whatever_disentangler'
-        )
-    )
-)
-from whatever_disentangler import Disentangler
-
-sys.path.append(
-    os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__), '../telegram_bots'
-        )
-    )
-)
-from utils import JournalLogger
-
-sys.path.append(
-    os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__), '../morse_decoder_encoder'
-        )
-    )
-)
-from morse_decoder_encoder import decode_from_morse, encode_to_ansi_morse
+from fastapi import FastAPI, Query
+from journal_logger.journal_logger import JournalLogger
+from morse_decoder_encoder import morse_decoder_encoder as mde
+from url_unescape import url_unescape
+from whatever_disentangler import whatever_disentangler as wd
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -67,17 +38,10 @@ app = FastAPI(
 # http://localhost:3000/unescape_url/https://uk.wikipedia.org/wiki/%u0423%u043A%u0440%u0430%u0457%u043D%u0430
 @app.get("/unescape_url/{url:path}")
 async def unescape_url(url: str) -> str:
-    url_to_unescape = url
-    jl.print(f"url_to_unescape: {url_to_unescape}")
-    proc_url_unescape = subprocess.Popen(
-        ['/usr/bin/python', '../url_tools/url_unescape.py', url_to_unescape],
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-    )
-    output_as_bytes, err_as_bytes = proc_url_unescape.communicate()
-    if err_as_bytes and not output_as_bytes:
-        jl.print(err_as_bytes)
-    return output_as_bytes.decode().strip('\n')
+    jl.print(f"url_to_unescape: {url}")
+    unescaped_url = url_unescape(url)
+    jl.print(f"unescaped_url: {unescaped_url}")
+    return unescaped_url
 
 
 # http://localhost:3000/fix_legacy_encoding?str_to_fix=GocÅ‚awski&encoding_from=&encoding_to=&expected_str=Gocławski&recursivity_depth=
@@ -118,7 +82,7 @@ async def fix_legacy_encoding_async(
         else int(recursivity_depth)
 
     try:
-        disentangler = Disentangler()
+        disentangler = wd.Disentangler()
         ret = disentangler.disentangle(
             str_to_fix=str_to_fix,
             encoding_from=encoding_from,
@@ -138,7 +102,7 @@ async def fix_legacy_encoding_async(
 @app.get("/decode_morse/{str_to_decode}")
 async def decode_morse(str_to_decode: str) -> dict:
     jl.print(f'{str_to_decode = }')
-    return decode_from_morse(str_to_decode)
+    return mde.decode_from_morse(str_to_decode)
 
 # http://localhost:3000/encode_to_morse?str_to_encode=СКАЗАННОЕ%20ИСЧЕЗАЕТ,%20НАПИСАННОЕ%20ОСТАЕТСЯ
 @app.get("/encode_to_morse")
@@ -146,7 +110,7 @@ async def decode_morse(str_to_decode: str) -> dict:
 @app.get("/encode_to_morse/{str_to_encode}")
 async def encode_to_morse(str_to_encode: str) -> dict:
     jl.print(f'{str_to_encode = }')
-    return encode_to_ansi_morse(str_to_encode)
+    return mde.encode_to_ansi_morse(str_to_encode)
 
 
 if __name__ == "__main__":

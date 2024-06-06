@@ -9,10 +9,10 @@ httpx = ">=0.24.0"
 requests = ">=2.28.2"
 urllib3 = ">=1.26.9"
 uvicorn = ">=0.20.0"
-cysystemd = ">=1.5.3"
-telebot = "^0.0.5"
-aiohttp = "^3.9.5"
-yt-dlp = "^2024.5.27"
+journal-logger = {path = "../journal-logger", develop = true}
+morse-decoder-encoder = {path = "../morse-decoder-encoder", develop = true}
+whatever-disentangler = {path = "../whatever-disentangler", develop = true}
+url-unescape = {path = "../url_tools/url_unescape", develop = true}
 
 
 [build-system]
