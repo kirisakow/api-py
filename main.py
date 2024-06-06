@@ -59,7 +59,7 @@ async def fix_legacy_encoding_async(
             default='utf_8', title='Tiiiiitle', description='Descriiiiption descriiiiption descriiiiption'),
         expected_str: str | None = Query(
             default=None, title='Tiiiiitle', description='Descriiiiption descriiiiption descriiiiption'),
-        recursivity_depth: int | None | str = Query(default=1, ge=1, title='Tiiiiitle', description='Descriiiiption descriiiiption descriiiiption', coerce=lambda x: int(x) if isinstance(x, int) else 1)):
+        recursivity_depth: int | None | str = Query(default=1, title='Tiiiiitle', description='Descriiiiption descriiiiption descriiiiption', coerce=lambda x: int(x) if isinstance(x, int) else 1)):
 
     jl.print('Request params:',)
     qparams = [str_to_fix, encoding_from,
